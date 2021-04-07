@@ -34,6 +34,7 @@ class Client(DatagramProtocol):
             self.transport.write(input(":::").encode('utf-8'), self.address)
 
 if __name__ == '__main__':
+    IP = input("Enter Your IP: ")
     port = randint(1000, 5000) # We should stabilize this port for impl
-    reactor.listenUDP(port, Client('localhost', port))
+    reactor.listenUDP(port, Client(IP, port))
     reactor.run()
