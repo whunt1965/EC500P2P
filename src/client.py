@@ -16,8 +16,8 @@ class Client(DatagramProtocol):
         print("Working on id:", self.id)
 
     def startProtocol(self):
-        # self.transport.write("ready".encode("utf-8"), self.server)
-        self.transport.write("ready".encode("utf-8"), self.address)
+        self.transport.write("ready".encode("utf-8"), self.server)
+        # self.transport.write("ready".encode("utf-8"), self.address)
 
     def datagramReceived(self, datagram: bytes, addr):
         datagram = datagram.decode('utf-8')
