@@ -4,6 +4,7 @@ from twisted.internet.protocol import DatagramProtocol
 from twisted.internet import reactor
 from random import randint
 import sqlite3
+import hashlib
 
 # create connection
 conn = sqlite3.connect('chatlog.db')  # used to generate db file
@@ -29,18 +30,19 @@ def localbd():
 
 
 class Client(DatagramProtocol):
-    def __init__(self, host, port, name):
+    def __init__(self, host, port, name, password):
         if host == "localhost":
             host = "127.0.0.1"
 
         self.id = host, port
         self.name = name
+        self.password = password
         self.address = None #The other client we talk to
         self.server = '34.86.120.197', 9999 # Ask Wiley for the IP
         print("Working on id:", self.id)
 
     def startProtocol(self):
-        msg = "ready%" + self.name
+        msg = "ready%" + self.name + "&" + self.password
         self.transport.write(msg.encode("utf-8"), self.server)
         # self.transport.write("ready".encode("utf-8"), self.address)
 
@@ -60,14 +62,15 @@ class Client(DatagramProtocol):
         else:
             print(addr, ":", datagram)
 
-        print(self.address)
 
     def send_message(self):
         while True:
             self.transport.write(input(":::").encode('utf-8'), self.address)
 
 if __name__ == '__main__':
-    name = input("Enter Your Name: ") + str(uuid4())
+    name = input("Enter Your Name: ")
+    password = input("Enter your password")
+    password = hashlib.md5(password.encode())
     port = randint(1000, 5000) # We should stabilize this port for impl
-    reactor.listenUDP(port, Client('localhost', port, name))
+    reactor.listenUDP(port, Client('localhost', port, name, password))
     reactor.run()

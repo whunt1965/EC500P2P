@@ -2,6 +2,8 @@ from twisted.internet.protocol import DatagramProtocol
 from twisted.internet import reactor
 from random import randint
 
+serverdata = dict()
+
 class Server(DatagramProtocol):
 
     def __init__(self):
@@ -10,11 +12,18 @@ class Server(DatagramProtocol):
     def datagramReceived(self, datagram: bytes, addr):
         datagram = datagram.decode("utf-8")
         if "ready" in datagram:
-            addresses = "\n".join([str(x) for x in self.clients])
-
-            self.transport.write(addresses.encode("utf-8"), addr)
-            self.clients.add(datagram[6:] + str(addr))
-
+            try:
+                ready, name, pw = datagram.split("&")
+            except:
+                self.transport.write("Please enter a username and password!".encode("utf-8"), addr)
+            password, ip = serverdata.get(name)
+            if password == None or password == pw:
+                serverdata[name] = (pw, addr)
+                addresses = "\n".join([str(x) for x in self.clients])
+                self.transport.write(addresses.encode("utf-8"), addr)
+                self.clients.add(datagram[6:] + str(addr))
+            else:
+                self.transport.write("Invalid Password!".encode("utf-8"), addr)
 
 if __name__ == '__main__':
     reactor.listenUDP(9999, Server())
