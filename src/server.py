@@ -22,7 +22,7 @@ class Server(DatagramProtocol):
                 serverdata[name] = (pw, addr)
                 addresses = "\n".join([str(x) for x in self.clients])
                 self.transport.write(addresses.encode("utf-8"), addr)
-                self.clients.add(datagram[6:] + str(addr))
+                self.clients.add(name + str(addr))
             else:
                 self.transport.write("Invalid Password!".encode("utf-8"), addr)
 
