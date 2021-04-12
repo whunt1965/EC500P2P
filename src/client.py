@@ -12,7 +12,7 @@ class Client(DatagramProtocol):
 
         self.id = host, port
         self.address = None #The other client we talk to
-        self.server = '127.0.0.1', 9999
+        self.server = '', 9999 # Ask Wiley for the IP
         print("Working on id:", self.id)
 
     def startProtocol(self):
@@ -25,16 +25,24 @@ class Client(DatagramProtocol):
         if addr == self.server:
             print("Choose a client from this list\n", datagram)
             self.address = input("Choose Host: "), int(input("Choose Port: "))
-            reactor.callInThread(self.send_message)
+
+            # Allows us to refresh and view entire IP list
+            if self.address == ('', 0):
+                self.transport.write("ready".encode("utf-8"), self.server)
+            else:
+                reactor.callInThread(self.send_message)
+
         else:
             print(addr, ":", datagram)
+
+        print(self.address)
 
     def send_message(self):
         while True:
             self.transport.write(input(":::").encode('utf-8'), self.address)
 
 if __name__ == '__main__':
-    IP = input("Enter Your IP: ")
+    # IP = input("Enter Your IP: ")
     port = randint(1000, 5000) # We should stabilize this port for impl
-    reactor.listenUDP(port, Client(IP, port))
+    reactor.listenUDP(port, Client('localhost', port))
     reactor.run()
