@@ -67,7 +67,7 @@ class Client(DatagramProtocol):
             self.transport.write(input(":::").encode('utf-8'), self.address)
 
 if __name__ == '__main__':
-    name = input("Enter Your Name: ")
+    name = input("Enter Your Name: ") + str(uuid4())
     port = randint(1000, 5000) # We should stabilize this port for impl
     reactor.listenUDP(port, Client('localhost', port, name))
     reactor.run()
