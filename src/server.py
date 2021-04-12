@@ -14,10 +14,10 @@ class Server(DatagramProtocol):
         if "ready" in datagram:
             try:
                 ready, name, pw = datagram.split("&")
+                password, ip = serverdata.get(name)
             except:
                 self.transport.write("Please enter a username and password!".encode("utf-8"), addr)
                 return
-            password, ip = serverdata.get(name)
             if password == None or password == pw:
                 serverdata[name] = (pw, addr)
                 addresses = "\n".join([str(x) for x in self.clients])
