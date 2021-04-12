@@ -42,7 +42,7 @@ class Client(DatagramProtocol):
         print("Working on id:", self.id)
 
     def startProtocol(self):
-        msg = "ready%" + self.name + "&" + self.password
+        msg = "ready&" + self.name + "&" + self.password
         self.transport.write(msg.encode("utf-8"), self.server)
         # self.transport.write("ready".encode("utf-8"), self.address)
 

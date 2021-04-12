@@ -16,6 +16,7 @@ class Server(DatagramProtocol):
                 ready, name, pw = datagram.split("&")
             except:
                 self.transport.write("Please enter a username and password!".encode("utf-8"), addr)
+                return
             password, ip = serverdata.get(name)
             if password == None or password == pw:
                 serverdata[name] = (pw, addr)
