@@ -3,6 +3,29 @@ from uuid import uuid4
 from twisted.internet.protocol import DatagramProtocol
 from twisted.internet import reactor
 from random import randint
+import sqlite3
+
+# create connection
+conn = sqlite3.connect('chatlog.db')  # used to generate db file
+
+# create cursor
+c = conn.cursor()  # used to create tables
+# creating table
+c.execute("""CREATE TABLE chat (
+    user_name TEXT,
+    user_ID INTEGER,
+    messeges TEXT,
+    msgcount INTEGER,
+    localattachment BLOB
+
+)""")
+
+
+def localbd():
+    c.execute("INSERT INTO chat VALUES()")
+
+
+# conn.close() #best practice to close connection
 
 
 class Client(DatagramProtocol):
