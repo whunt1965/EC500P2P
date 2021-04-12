@@ -69,8 +69,8 @@ class Client(DatagramProtocol):
 
 if __name__ == '__main__':
     name = input("Enter Your Name: ")
-    password = input("Enter your password")
-    password = hashlib.md5(password.encode())
+    password = input("Enter your password: ")
+    password = str(hashlib.md5(password.encode()))
     port = randint(1000, 5000) # We should stabilize this port for impl
     reactor.listenUDP(port, Client('localhost', port, name, password))
     reactor.run()
