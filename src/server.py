@@ -23,14 +23,14 @@ class Server(DatagramProtocol):
                 data = self.clients.get(name) # Get array [password, IP]
                 password = data[0]
                 if password == pw: #Password matches
-                    self.serverdata[name] = [pw, addr] # Add pw and IP to server datastore
+                    self.clients[name] = [pw, addr] # Add pw and IP to server datastore
                     addresses = "\n".join([str(x) + ": " + str(self.clients.get(x)[1]) for x in self.clients.keys()])
                     self.transport.write(addresses.encode("utf-8"), addr)
                 else:
                     self.transport.write("Invalid Password for this username".encode("utf-8"), addr)
             # If name is not registered, add it
             else:
-                self.serverdata[name] = [pw, addr]  # Add pw and IP to server datastore
+                self.clients[name] = [pw, addr]  # Add pw and IP to server datastore
                 addresses = "\n".join([str(x) + ": " + str(self.clients.get(x)[1]) for x in self.clients.keys()])
                 self.transport.write(addresses.encode("utf-8"), addr)
 
