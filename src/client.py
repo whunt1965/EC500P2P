@@ -55,7 +55,7 @@ class Client(DatagramProtocol):
 
             # Allows us to refresh and view entire IP list
             if self.address == ('', 0):
-                self.transport.write("ready".encode("utf-8"), self.server)
+                self.transport.write("again".encode("utf-8"), self.server)
             else:
                 reactor.callInThread(self.send_message)
 

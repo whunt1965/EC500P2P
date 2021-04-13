@@ -34,6 +34,11 @@ class Server(DatagramProtocol):
                 addresses = "\n".join([str(x) + ": " + str(self.clients.get(x)[1]) for x in self.clients.keys()])
                 self.transport.write(addresses.encode("utf-8"), addr)
 
+        # For refreshing list
+        elif "again" in datagram:
+            addresses = "\n".join([str(x) + ": " + str(self.clients.get(x)[1]) for x in self.clients.keys()])
+            self.transport.write(addresses.encode("utf-8"), addr)
+
 if __name__ == '__main__':
     reactor.listenUDP(9999, Server())
     reactor.run()
