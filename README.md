@@ -22,7 +22,7 @@
 - `source venv/bin/activate`
 - `pip3 install -r requirements.txt`
 - Run `python3 client.py` 
-- Enter a name and password to register with the central server
+- Enter a name and password to register your IP with the central server (so you can discover and be discovered by others!)
 - Enter the host IP and port number of other client and chat!
 
 ## Modules
