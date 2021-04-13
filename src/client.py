@@ -62,14 +62,14 @@ class Client(DatagramProtocol):
                 reactor.callInThread(self.send_message)
 
         else:
-            datagram = ss.decipher(datagram)
+            datagram = ss.decipher(datagram, keep_punct=True)
             print(addr, ":", datagram)
 
     def send_message(self):
         while True:
             message = input(":::")
             self.transport.write(ss.encipher(
-                message).encode('utf-8'), self.address)
+                message, keep_punct=True).encode('utf-8'), self.address)
 
 
 if __name__ == '__main__':
