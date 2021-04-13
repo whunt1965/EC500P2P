@@ -36,3 +36,7 @@
 - Application: Python (using the Twisted library)
 - Database: SQLite (WIP)
 - Encryption: PyCipher
+
+## Bugs
+- Currently, the first message is getting lost in the ether (never received). This may be something strange with the protocol, but needs further exploration.
+- This is not currently working for 2 computers on the same local network
