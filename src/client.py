@@ -3,6 +3,7 @@ from uuid import uuid4
 from twisted.internet.protocol import DatagramProtocol
 from twisted.internet import reactor
 from random import randint
+from pycipher import SimpleSubstitution
 import sqlite3
 import hashlib
 
@@ -27,6 +28,7 @@ def localbd():
 
 
 # conn.close() #best practice to close connection
+ss = SimpleSubstitution('phqgiumeaylnofdxjkrcvstzwb')
 
 
 class Client(DatagramProtocol):
@@ -37,8 +39,8 @@ class Client(DatagramProtocol):
         self.id = host, port
         self.name = name
         self.password = password
-        self.address = None #The other client we talk to
-        self.server = '34.86.120.197', 9999 # Ask Wiley for the IP
+        self.address = None  # The other client we talk to
+        self.server = '34.86.120.197', 9999  # Ask Wiley for the IP
         print("Working on id:", self.id)
 
     def startProtocol(self):
@@ -60,17 +62,20 @@ class Client(DatagramProtocol):
                 reactor.callInThread(self.send_message)
 
         else:
+            datagram = ss.decipher(datagram)
             print(addr, ":", datagram)
-
 
     def send_message(self):
         while True:
-            self.transport.write(input(":::").encode('utf-8'), self.address)
+            message = input(":::")
+            self.transport.write(ss.encipher(
+                message).encode('utf-8'), self.address)
+
 
 if __name__ == '__main__':
     name = input("Enter Your Name: ")
     password = input("Enter your password: ")
     password = str(hashlib.md5(password.encode()))
-    port = randint(1000, 5000) # We should stabilize this port for impl
+    port = randint(1000, 5000)  # We should stabilize this port for impl
     reactor.listenUDP(port, Client('localhost', port, name, password))
     reactor.run()
