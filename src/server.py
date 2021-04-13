@@ -30,6 +30,7 @@ class Server(DatagramProtocol):
                     self.transport.write(addresses.encode("utf-8"), addr)
                 else:
                     self.transport.write("Invalid Password for this username".encode("utf-8"), addr)
+                    return
             # If name is not registered, add it
             else:
                 self.clients[name] = [pw, addr]  # Add pw and IP to server datastore
