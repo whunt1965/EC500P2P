@@ -13,7 +13,9 @@ class Server(DatagramProtocol):
 
             # Parse datagram into ready&name&password
             try:
-                ready, name, pw = datagram.split("&")
+                args = datagram.split("&")
+                name = args[1]
+                pw = args[2]
             except:
                 self.transport.write("Please enter a username and password!".encode("utf-8"), addr)
                 return
