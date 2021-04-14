@@ -41,3 +41,6 @@
 ## Bugs
 - Currently, the first message is getting lost in the ether (never received). This may be something strange with the protocol, but needs further exploration.
 - This is not currently working for 2 computers on the same local network
+
+## References
+- Our client.py and server.py are based on [this tutorial](https://www.youtube.com/watch?v=1Fay1pjttLg) using Twisted to create a P2P messaging system
