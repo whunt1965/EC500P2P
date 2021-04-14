@@ -14,9 +14,9 @@ c = conn.cursor()  # used to create tables
 c.execute("""CREATE TABLE chat (
     user_name TEXT,
     user_ID INTEGER,
+    convID INTEGER,
     messeges TEXT,
-    msgcount INTEGER,
-    localattachment BLOB
+    msgcount INTEGER
 
 )""")
 
@@ -57,10 +57,13 @@ class Client(DatagramProtocol):
 
         else:
             print(addr, ":", datagram)
+            post = datagram;
+
 
         print(self.address)
 
     def send_message(self):
+
         while True:
             self.transport.write(input(":::").encode('utf-8'), self.address)
 
